@@ -1,3 +1,15 @@
 101 Andrew 3/5 5/9 65 Personal-reasons
 102 CChien 2/5 2/9 4 Maternity-leave
 104 WenKai 2/5 2/9 4 Family-emergency
+103 AnAn 2/5 2/9 4 Family-emergency
+112 Yingan 1/4 2/3 30 Maternity-leave
+118 jinx 9/10 10/17 37 Family-emergency
+116 Ryuk 11/2 11/9 7 Maternity-leave
+124 Siti 2/4 2/7 3 Maternity-leave
+130 Iman 11/12 11/23 11 Maternity-leave
+107 James 2/4 2/6 2 Health-related-issues
+105 Jinan 2/5 2/6 1 Health-related-issues
+114 stella 4/6 4/8 2 Maternity-leave
+121 Tom 2/14 2/18 4 Personal-reasons
+122 kyai 12/3 12/9 6 Maternity-leave
+108 Wong 10/12 10/23 11 Maternity-leave

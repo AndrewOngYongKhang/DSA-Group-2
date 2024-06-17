@@ -1,3 +1,15 @@
 101	Andrew	65
 102	CChien	4
 104	WenKai	4
+103	AnAn	4
+112	Yingan	30
+118	jinx	37
+116	Ryuk	7
+124	Siti	3
+130	Iman	11
+107	James	2
+105	Jinan	1
+114	stella	2
+121	Tom	4
+122	kyai	6
+108	Wong	11
