@@ -135,7 +135,7 @@ class admin{
 	
 	public:
 		void admin_main();
-		void admin_verify();
+		friend void admin_verify(admin& a);
 		void admin_menu();
 		admin(){//default constructor
 		
@@ -175,8 +175,8 @@ class Applyleave{
 		void apply(int id);		
 		bool isValidDate(int month, int day); 
 		int getDaysInMonth(int month); 		
-		int getDuration();
-		string getReason(int optreason);	
+		friend int getDuration();
+		friend string getReason(int optreason);	
 		
 		friend class employee;
 
@@ -490,11 +490,11 @@ void admin::admin_main(){
 	cin>>admin_password;
 	
 	
-	admin_verify();
+	admin_verify(*this);
 }
 
 //admin verify
-void admin::admin_verify(){
+void admin_verify(admin& a){
     int verify_id;
     string verify_name, verify_password;
     char reenter;
@@ -508,7 +508,7 @@ void admin::admin_verify(){
     }
 
     while (fr_admin >> verify_id >> verify_password >>  verify_name) {
-        if (admin_id == verify_id && admin_password == verify_password) {
+        if (a.admin_id == verify_id && a.admin_password == verify_password) {
             found = true;
             fr_admin >> verify_id >> verify_password >>  verify_name;
             break;  // Add this line to exit the loop once a match is found
@@ -519,14 +519,14 @@ void admin::admin_verify(){
 
     if (found) {
         cout << "\nAdmin verification successful!" << endl;
-        admin_menu();
+        a.admin_menu();
     } else {
         cout << "\nAdmin verification failed. Invalid credentials." << endl;
         cout << "Do you want to reenter? [Y/N]: ";
         cin >> reenter;
 
         if (reenter == 'Y' || reenter == 'y') {
-            admin_main();
+            a.admin_main();
         } else {
             exit(0);
         }
@@ -1845,25 +1845,27 @@ int Applyleave::getDaysInMonth(int month){
         }
     }
     
-int Applyleave::getDuration(){
+int getDuration(){
+    Applyleave a;
     	{
-        int total_days_start = leave_start_day;
-        int total_days_end = leave_end_day;
+        int total_days_start = a.leave_start_day;
+        int total_days_end = a.leave_end_day;
 
-        for (int month = 1; month < leave_start_mo; ++month) {
-            total_days_start += getDaysInMonth(month);
+        for (int month = 1; month < a.leave_start_mo; ++month) {
+            total_days_start += a.getDaysInMonth(month);
         }
 
-        for (int month = 1; month < leave_end_mo; ++month) {
-            total_days_end += getDaysInMonth(month);
+        for (int month = 1; month < a.leave_end_mo; ++month) {
+            total_days_end += a.getDaysInMonth(month);
         }
 
         return total_days_end - total_days_start;
     }
 	}
 	
-string Applyleave::getReason(int optreason) {
+string getReason(int optreason) {
 			char reenter;
+            Applyleave a;
 			Employee e;
 			int id=e.employee_id;
 			switch(optreason) { 
@@ -1883,7 +1885,7 @@ string Applyleave::getReason(int optreason) {
 				
 				
 				if(reenter=='Y'||reenter=='y'){
-					apply(id);
+					a.apply(id);
 				}
 				
 				else{
@@ -2083,8 +2085,6 @@ void Modifyleave::search() {
     cin >> choose;
 
     if (choose == 1) {
-    	
-    	
     	
     	system("CLS");
     cout << "\n\n\t\t======= A P P L Y I N G  L E A V E  E M P L O Y E E   I N F O R M A T I O N =======\n\n" << endl;
