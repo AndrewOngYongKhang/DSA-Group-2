@@ -127,7 +127,7 @@ class employee{
 		friend class Modifyleave;
 };
 
-class admin{
+class admin:public employee{
 
 	private:
 	int admin_id;
@@ -462,7 +462,6 @@ cout<<" #       #      ###### #    # #         ####### #####  #####  #      # # 
 cout<<" #       #      #    #  #  #  #         #     # #      #      #      # #    # #    #   #   # #    # #   ## "<<endl;
 cout<<" ####### ###### #    #   ##   ######    #     # #      #      ###### #  ####  #    #   #   #  ####  #    # "<<endl;
                                                                                                            
-
     cout<<""<<endl;
 	cout<<"	\t\t==  L E A V E   A P P L I C A T I O N  S Y S T E M  ==\n\n" <<endl;
 	cout<<"	\t\t	=======  M A I N   M E N U  =======	\n\n"<<endl;
