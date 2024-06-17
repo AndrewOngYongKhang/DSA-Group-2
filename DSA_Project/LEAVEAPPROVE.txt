@@ -1,0 +1,3 @@
+101 Andrew 3/5 5/9 65 Personal-reasons
+102 CChien 2/5 2/9 4 Maternity-leave
+104 WenKai 2/5 2/9 4 Family-emergency
