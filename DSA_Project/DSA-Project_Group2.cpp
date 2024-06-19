@@ -216,6 +216,9 @@ Applyleave Alea;
 Modifyleave Mlea;
 Approveleave appr;
 Balrecord BR;
+int getDuration();
+string getReason(int optreason);
+
 void EmployeeList::e_regis(){
         admin ad;
         char sure, reenter;
