@@ -127,7 +127,7 @@ class employee{
 		friend class Modifyleave;
 };
 
-class admin:public employee{
+class admin{
 
 	private:
 	int admin_id;
@@ -135,7 +135,7 @@ class admin:public employee{
 	
 	public:
 		void admin_main();
-		friend void admin_verify(admin& a);
+		void admin_verify();
 		void admin_menu();
 		admin(){//default constructor
 		
@@ -175,8 +175,8 @@ class Applyleave{
 		void apply(int id);		
 		bool isValidDate(int month, int day); 
 		int getDaysInMonth(int month); 		
-		friend int getDuration();
-		friend string getReason(int optreason);	
+		int getDuration();
+		string getReason(int optreason);	
 		
 		friend class employee;
 
@@ -197,7 +197,7 @@ class Modifyleave:protected Applyleave{
 		void viewleave(int id);
 		
 		//edit
-		void editleave(int id);
+		int editleave(int id);
 };
 
 class Approveleave:protected Applyleave{
@@ -216,9 +216,6 @@ Applyleave Alea;
 Modifyleave Mlea;
 Approveleave appr;
 Balrecord BR;
-int getDuration();
-string getReason(int optreason);
-
 void EmployeeList::e_regis(){
         admin ad;
         char sure, reenter;
@@ -386,7 +383,7 @@ void EmployeeList::e_del(){
         while((temp!=NULL)&&(temp->employee_id != id)){
 			prev=temp;
 			temp=temp->next;
-			cout<<" "<<temp->employee_name;
+			
 		}
 		if (temp != NULL) {
 		    if (temp == head) {
@@ -465,6 +462,7 @@ cout<<" #       #      ###### #    # #         ####### #####  #####  #      # # 
 cout<<" #       #      #    #  #  #  #         #     # #      #      #      # #    # #    #   #   # #    # #   ## "<<endl;
 cout<<" ####### ###### #    #   ##   ######    #     # #      #      ###### #  ####  #    #   #   #  ####  #    # "<<endl;
                                                                                                            
+
     cout<<""<<endl;
 	cout<<"	\t\t==  L E A V E   A P P L I C A T I O N  S Y S T E M  ==\n\n" <<endl;
 	cout<<"	\t\t	=======  M A I N   M E N U  =======	\n\n"<<endl;
@@ -492,11 +490,11 @@ void admin::admin_main(){
 	cin>>admin_password;
 	
 	
-	admin_verify(*this);
+	admin_verify();
 }
 
 //admin verify
-void admin_verify(admin& a){
+void admin::admin_verify(){
     int verify_id;
     string verify_name, verify_password;
     char reenter;
@@ -510,7 +508,7 @@ void admin_verify(admin& a){
     }
 
     while (fr_admin >> verify_id >> verify_password >>  verify_name) {
-        if (a.admin_id == verify_id && a.admin_password == verify_password) {
+        if (admin_id == verify_id && admin_password == verify_password) {
             found = true;
             fr_admin >> verify_id >> verify_password >>  verify_name;
             break;  // Add this line to exit the loop once a match is found
@@ -521,14 +519,14 @@ void admin_verify(admin& a){
 
     if (found) {
         cout << "\nAdmin verification successful!" << endl;
-        a.admin_menu();
+        admin_menu();
     } else {
         cout << "\nAdmin verification failed. Invalid credentials." << endl;
         cout << "Do you want to reenter? [Y/N]: ";
         cin >> reenter;
 
         if (reenter == 'Y' || reenter == 'y') {
-            a.admin_main();
+            admin_main();
         } else {
             exit(0);
         }
@@ -881,11 +879,11 @@ void EmployeeList::e_displayemp()
         }
 		
         char ans;
-        cout << "\nClick [Y/y] to continue : ";
+        cout << "\nAre wanna back to main menu? Click [Y/y] to continue : ";
         cin >> ans;
 
         if (ans == 'y' || ans == 'Y') {
-            e_displaySubMenu(); // Assuming this function exists
+            ad.admin_menu(); // Assuming this function exists
         }
     }
 
@@ -1847,27 +1845,25 @@ int Applyleave::getDaysInMonth(int month){
         }
     }
     
-int getDuration(){
-    Applyleave a;
+int Applyleave::getDuration(){
     	{
-        int total_days_start = a.leave_start_day;
-        int total_days_end = a.leave_end_day;
+        int total_days_start = leave_start_day;
+        int total_days_end = leave_end_day;
 
-        for (int month = 1; month < a.leave_start_mo; ++month) {
-            total_days_start += a.getDaysInMonth(month);
+        for (int month = 1; month < leave_start_mo; ++month) {
+            total_days_start += getDaysInMonth(month);
         }
 
-        for (int month = 1; month < a.leave_end_mo; ++month) {
-            total_days_end += a.getDaysInMonth(month);
+        for (int month = 1; month < leave_end_mo; ++month) {
+            total_days_end += getDaysInMonth(month);
         }
 
         return total_days_end - total_days_start;
     }
 	}
 	
-string getReason(int optreason) {
+string Applyleave::getReason(int optreason) {
 			char reenter;
-            Applyleave a;
 			Employee e;
 			int id=e.employee_id;
 			switch(optreason) { 
@@ -1887,7 +1883,7 @@ string getReason(int optreason) {
 				
 				
 				if(reenter=='Y'||reenter=='y'){
-					a.apply(id);
+					apply(id);
 				}
 				
 				else{
@@ -2088,6 +2084,8 @@ void Modifyleave::search() {
 
     if (choose == 1) {
     	
+    	
+    	
     	system("CLS");
     cout << "\n\n\t\t======= A P P L Y I N G  L E A V E  E M P L O Y E E   I N F O R M A T I O N =======\n\n" << endl;
     
@@ -2233,21 +2231,24 @@ void Modifyleave::viewleave(int id) {
         if (record) {
             cout << "\n\nThis is the details of the leave: \n" << endl;
             cout<<"=============================================================================================="<<endl;
-            cout << left; // Set alignment to left
-    cout << setw(10) << "ID" 
-         << setw(20) << "NAME" 
-         << setw(15) << "START DATE" 
-         << setw(15) << "END DATE" 
-         << setw(10) << "DURATION" 
-         << setw(20) << "REASON" << endl;
+             std::cout << std::left;
+         
+          std::cout << std::setw(10) << "ID" 
+              << std::setw(20) << "NAME" 
+              << std::setw(15) << "START DATE" 
+              << std::setw(15) << "END DATE" 
+              << std::setw(15) << "DURATION" 
+              << std::setw(25) << "REASON" 
+              << std::endl;
          cout<<"=============================================================================================="<<endl;
-
-    cout << setw(10) << record->eid 
-         << setw(20) << record->B_name 
-         << setw(15) << record->estart_day 
-         << setw(15) << record->eend_day 
-         << setw(10) << record->eduration 
-         << setw(20) << record->ereason << endl;
+         
+         std::cout << std::setw(10) << record->eid 
+                  << std::setw(20) << record->B_name 
+                  << std::setw(15) << record->estart_day 
+                  << std::setw(15) << record->eend_day 
+                  << std::setw(15) << record->eduration 
+                  << std::setw(25) << record->ereason
+                  << std::endl;
         
         cout<<endl<<"Do you want back to menu ? [Y/N]:";
         cin>>reenter;
@@ -2276,9 +2277,28 @@ void Modifyleave::viewleave(int id) {
         LeaveRecord* record = leaveApprovals.search(aprid);
         if (record) {
             cout << "\n\nThis is the details of the leave: \n" << endl;
-            cout << "ID\tNAME\t\tSTART DATE\tEND DATE\tDURATION\tREASON" << endl;
-            cout << record->eid << "\t" << record->B_name << "\t" << record->estart_day << "\t" << record->eend_day << "\t" << record->eduration << "\t" << record->ereason << endl;
-        cout<<endl<<"Do you want back to menu ? [Y/N]:";
+            cout<<"=============================================================================================="<<endl;
+             std::cout << std::left;
+         
+          std::cout << std::setw(10) << "ID" 
+              << std::setw(20) << "NAME" 
+              << std::setw(15) << "START DATE" 
+              << std::setw(15) << "END DATE" 
+              << std::setw(15) << "DURATION" 
+              << std::setw(25) << "REASON" 
+              << std::endl;
+         cout<<"=============================================================================================="<<endl;
+         
+         std::cout << std::setw(10) << record->eid 
+                  << std::setw(20) << record->B_name 
+                  << std::setw(15) << record->estart_day 
+                  << std::setw(15) << record->eend_day 
+                  << std::setw(15) << record->eduration 
+                  << std::setw(25) << record->ereason
+                  << std::endl;
+		
+		
+		cout<<endl<<"Do you want back to menu ? [Y/N]:";
         cin>>reenter;
         if(reenter == 'Y' || reenter == 'y')
         {
@@ -2310,7 +2330,7 @@ void Modifyleave::viewleave(int id) {
 }
 
 //EDIT LEAVE
-void Modifyleave::editleave(int id){
+int Modifyleave::editleave(int id){
 	system("CLS");
      char reenter;
     bool idFound = false;
@@ -2409,6 +2429,7 @@ void Modifyleave::editleave(int id){
     		cout << "The reason\t\t\t: " << temp->reason << endl;
     		cout << "The duration of your leave is\t: " << getDuration() << " days\n";
     		tempfile<<temp->id<<" "<<temp->name<<" "<<leave_start_mo<<"/"<<leave_start_day<<" "<<leave_end_mo<<"/"<<leave_end_day<<" "<<temp->duration<<" "<<temp->reason<<endl;
+    		
 		    idFound = true;
     }
     temp=head;
@@ -2421,8 +2442,16 @@ void Modifyleave::editleave(int id){
     {
         tempfile.close();
         fin.close();
-        remove("LEAVEAPPLY.txt");
-        rename("temp.txt", "LEAVEAPPLY.txt");
+        if (std::remove("LEAVEAPPLY.txt") != 0) {
+        std::perror("Error deleting file");
+        return 1; // 返回1表示发生错误
+    }
+
+    // 重命名文件 "temp.txt" 为 "LEAVEAPPLY.txt"
+    if (std::rename("temp.txt", "LEAVEAPPLY.txt") != 0) {
+        std::perror("Error renaming file");
+        return 1; // 返回1表示发生错误
+    }
         cout << "\nChange successful for Employee ID: " << id << endl;
         cout<<"\n\n\n\n\nDo you want to go back to menu page? [Y/N]: ";
 		cin>>back;
